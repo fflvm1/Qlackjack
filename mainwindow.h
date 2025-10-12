@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "player.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,7 +18,21 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void initialise();  // Initilisation function used to hide unnecessary UI features, give first two cards, etc.
+    void checkState(bool isDealer, bool init);  // Function that checks if the game has to continue or if someone had already lost
+    void dealerHit();   // Function used to send a signal to the dealer to try to hit
+    void gameOver();    // Function used to set buttons like Play Again visible, and set buttons like Hit or Htand to be invisible
+
+private slots:
+    void on_hit_clicked();  // Function that triggers upon player pressing the Hit button
+
+    void on_stand_clicked();    // Function that triggers upon player pressing the Stand button
+
+    void on_play_again_clicked();   // Function that triggers upon player pressing the Play Again button
+
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui; // The UI pointer
+    Player p;   //  The player
+    Dealer d;   // The dealer
 };
 #endif // MAINWINDOW_H
