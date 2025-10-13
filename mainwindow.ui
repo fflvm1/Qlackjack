@@ -368,12 +368,20 @@
     </item>
     <item row="1" column="0">
      <widget class="QWidget" name="widget_6" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QVBoxLayout" name="player_deck"/>
+        <layout class="QHBoxLayout" name="playerDeck">
+         <property name="spacing">
+          <number>-1</number>
+         </property>
+        </layout>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="dealer_deck"/>
+        <layout class="QHBoxLayout" name="dealerDeck">
+         <property name="spacing">
+          <number>-1</number>
+         </property>
+        </layout>
        </item>
       </layout>
      </widget>

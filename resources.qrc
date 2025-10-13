@@ -1,0 +1,67 @@
+<RCC>
+    <qresource prefix="/card_back">
+        <file>assets/cardBackBlue.png</file>
+        <file>assets/cardBackGreen.png</file>
+        <file>assets/cardBackRed.png</file>
+    </qresource>
+    <qresource prefix="/clubs">
+        <file>assets/cardClubs_2.png</file>
+        <file>assets/cardClubs_3.png</file>
+        <file>assets/cardClubs_4.png</file>
+        <file>assets/cardClubs_5.png</file>
+        <file>assets/cardClubs_6.png</file>
+        <file>assets/cardClubs_7.png</file>
+        <file>assets/cardClubs_8.png</file>
+        <file>assets/cardClubs_9.png</file>
+        <file>assets/cardClubs_10.png</file>
+        <file>assets/cardClubs_A.png</file>
+        <file>assets/cardClubs_J.png</file>
+        <file>assets/cardClubs_K.png</file>
+        <file>assets/cardClubs_Q.png</file>
+    </qresource>
+    <qresource prefix="/diamonds">
+        <file>assets/cardDiamonds_2.png</file>
+        <file>assets/cardDiamonds_3.png</file>
+        <file>assets/cardDiamonds_4.png</file>
+        <file>assets/cardDiamonds_5.png</file>
+        <file>assets/cardDiamonds_6.png</file>
+        <file>assets/cardDiamonds_7.png</file>
+        <file>assets/cardDiamonds_8.png</file>
+        <file>assets/cardDiamonds_9.png</file>
+        <file>assets/cardDiamonds_10.png</file>
+        <file>assets/cardDiamonds_A.png</file>
+        <file>assets/cardDiamonds_J.png</file>
+        <file>assets/cardDiamonds_K.png</file>
+        <file>assets/cardDiamonds_Q.png</file>
+    </qresource>
+    <qresource prefix="/hearts">
+        <file>assets/cardHearts_2.png</file>
+        <file>assets/cardHearts_3.png</file>
+        <file>assets/cardHearts_4.png</file>
+        <file>assets/cardHearts_5.png</file>
+        <file>assets/cardHearts_6.png</file>
+        <file>assets/cardHearts_7.png</file>
+        <file>assets/cardHearts_8.png</file>
+        <file>assets/cardHearts_9.png</file>
+        <file>assets/cardHearts_10.png</file>
+        <file>assets/cardHearts_A.png</file>
+        <file>assets/cardHearts_J.png</file>
+        <file>assets/cardHearts_K.png</file>
+        <file>assets/cardHearts_Q.png</file>
+    </qresource>
+    <qresource prefix="/spades">
+        <file>assets/cardSpades_2.png</file>
+        <file>assets/cardSpades_3.png</file>
+        <file>assets/cardSpades_4.png</file>
+        <file>assets/cardSpades_5.png</file>
+        <file>assets/cardSpades_6.png</file>
+        <file>assets/cardSpades_7.png</file>
+        <file>assets/cardSpades_8.png</file>
+        <file>assets/cardSpades_9.png</file>
+        <file>assets/cardSpades_10.png</file>
+        <file>assets/cardSpades_A.png</file>
+        <file>assets/cardSpades_J.png</file>
+        <file>assets/cardSpades_K.png</file>
+        <file>assets/cardSpades_Q.png</file>
+    </qresource>
+</RCC>

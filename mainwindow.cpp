@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->playerDeck->setAlignment(Qt::AlignLeft);    // Ensures that cards appear on the left side of the player's deck
+    ui->dealerDeck->setAlignment(Qt::AlignRight);   // Ensures that cards appear on the right side of the dealer's deck
     initialise();   // Initialise game
 }
 
@@ -29,16 +31,34 @@ void MainWindow::initialise() {
     ui->statusBar->clearMessage();  // Clears the statusbar messages if there are any
     p.reset();  // Clears the player's cards array
     d.reset();  // Clears the dealer's cards array
+    // Remove any cards present in player's and dealer's deck at the beginning of the game
+    while (QLayoutItem* item = ui->playerDeck->takeAt(0)) {
+        delete item->widget();
+        delete item;
+    }
+    while (QLayoutItem* item = ui->dealerDeck->takeAt(0)) {
+        delete item->widget();
+        delete item;
+    }
+
+    int playerHitValue = 0; // Player's hit value placeholder
+    int dealerHitValue = 0; // Dealer's hit value placeholder
 
     // Loop that adds two cards to the player & the dealer
     for (int i = 0; i < 2; i++) {
-        p.hit();    // Forces the player to hit
+        playerHitValue = p.hit();    // Forces the player to hit and stores the hit value
+        addPlayerCard(playerHitValue);  // Draws an image of the card on the player's side of the deck
         // Changes the hands & cards count to reflect the changes in the array
         ui->player_hands->setText(QString::number(p.calculateHands()));
         ui->player_cards->setText(QString::number(p.calculateCards()));
         checkState(false, true);    // Checks if player had won/lost
 
-        d.hit();    // Forces the dealer to hit
+        dealerHitValue = d.hit();    // Forces the dealer to hit
+        if (i == 1) {   // If it's the second hit, hide the card
+            addDealerCard(dealerHitValue, true);
+        }   else {  // Otherwise don't
+            addDealerCard(dealerHitValue);
+        }
         // Changes the hands & cards count to reflect the changes in the array
         ui->dealer_hands->setText(QString::number(d.calculateHands(false)));
         ui->dealer_cards->setText(QString::number(d.calculateCards()));
@@ -49,7 +69,8 @@ void MainWindow::initialise() {
 // When the Hit button is pressed
 void MainWindow::on_hit_clicked()
 {
-    p.hit();    // Triggers player's hit function
+    int hitValue = p.hit();    // Triggers player's hit function and stores the value of the hit
+    addPlayerCard(hitValue);    // Adds a card corresponding to the value
     ui->statusBar->showMessage("Player hits");  // The statusbar reflects player's action
     ui->player_hands->setText(QString::number(p.calculateHands())); // Changes player's total value text to match the one in the array
     ui->player_cards->setText(QString::number(p.calculateCards())); // Changes the player's card count to match the real count
@@ -109,10 +130,12 @@ void MainWindow::checkState(bool isDealer, bool init) {
 
 // Dealer's hitting/standing logic
 void MainWindow::dealerHit() {
-    if (d.hit()) {  // Triggers the hit() function and checks whether the AI chose to hit or stand
-        ui->statusBar->showMessage("Dealer hits");  // If it chose to hit, reflect that in the statusbar
-    }   else {  // If it chose to stand
-        ui->statusBar->showMessage("Dealer stands");    // Reflect that in the statusbar instead
+    int hitValue = d.hit(); // Stores the dealer's hit value
+    if (hitValue != 0) {  // Checks if the value is NOT set to 0.
+        ui->statusBar->showMessage("Dealer hits");  // If it's not, dealer chose to hit and we update the statusbar message
+        addDealerCard(hitValue);    // Add a card to the dealer's deck corresponding to the hit value
+    }   else {  // If the value is set to 0
+        ui->statusBar->showMessage("Dealer stands");    // The dealer chose to stand, update the statusbar message
     }
 
     ui->dealer_hands->setText(QString::number(d.calculateHands(false)));    // Update the total value without revealing the second card
@@ -129,9 +152,33 @@ void MainWindow::on_play_again_clicked()
 // The hiding unnecessary & showing the necessary function, or whatever name that i gave it
 void MainWindow::gameOver() {
     ui->finish_message->setVisible(true);   // Shows the "action message"
-    ui->play_again->setVisible(true);   // Shows the Play Again button
     ui->hit->setVisible(false); // Hides the Hit button
     ui->stand->setVisible(false);   // Hides the Stand button
     ui->d_hands_text->setText("Dealer's hands(actual): ");  // Updates the dealer's hands text to reflect that actual value has been revealed
     ui->dealer_hands->setText(QString::number(d.calculateHands(true))); // Reveal dealer's total value in hands
+    secondCard->deleteLater();  // Remove the second card
+    ui->dealerDeck->removeWidget(secondCard);   // Remove it completely
+    secondCard = nullptr;   // Clear the pointer
+    addDealerCard(secondCardValue); // Add a replacement card matching it's original value
+
+    QTimer::singleShot(1500, this, [this]() {   // Timer
+        ui->play_again->setVisible(true);   // Shows the Play Again button
+    });
+}
+
+// Add a card to the player's deck
+void MainWindow::addPlayerCard(int value) {
+    // We draw a card based on the value and the fact that it's not the dealer's second card
+    QLabel* card = drawcard->createCard(value, false);
+    ui->playerDeck->insertWidget(0, card);  // Insert the widget to the playerdeck
+}
+
+// Add a card to dealer's deck
+void MainWindow::addDealerCard(int value, bool isSecondCard) {
+    QLabel* card = drawcard->createCard(value, isSecondCard);   // Draw a card with specified value and whether it's a second card or not
+    ui->dealerDeck->insertWidget(-1, card); // Insert it to the right side of the dealer's deck
+    if (isSecondCard) { // If we're adding the second card
+        secondCard = card;  // We save a pointer to it
+        secondCardValue = value;    // We save it's value
+    }
 }

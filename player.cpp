@@ -4,8 +4,10 @@
 #include <qDebug>
 
 // Player: Hitting logic
-void Player::hit() {
-    cards.push_back(QRandomGenerator::global()->bounded(1, 12));    // Adds a card with random value from 1 to 11 to the array
+int Player::hit() {
+    int newCardValue = QRandomGenerator::global()->bounded(1, 12);
+    cards.push_back(newCardValue);
+    return newCardValue;
 }
 
 // Player: Calculating the amount of cards
@@ -31,12 +33,13 @@ void Player::reset() {
 }
 
 // Dealer: Hitting logic
-bool Dealer::hit() {
+int Dealer::hit() {
     if (calculateHands(true) < 17) {    // Checks if the total value of all cards is less than 17
-        cards.push_back(QRandomGenerator::global()->bounded(1, 12));    // If so, dealer hits
-        return true;
+        int newCardValue = QRandomGenerator::global()->bounded(1, 12);    // If so, dealer hits
+        cards.push_back(newCardValue);
+        return newCardValue;
     }
-    return false;   // Otherwise, dealer stands
+    return 0;   // Otherwise, dealer stands
 }
 
 // Dealer: Calculating cards

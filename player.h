@@ -7,7 +7,7 @@
 class Player
 {
 public:
-    void hit(); // Hitting
+    int hit(); // Hitting
     void reset();   // Resetting cards if player chooses to play again
     int calculateHands();   // Calculates hands
     int calculateCards();   // Calculates cards
@@ -19,7 +19,7 @@ private:
 class Dealer
 {
 public:
-    bool hit(); // Dealer's AI
+    int hit(); // Dealer's AI
     void reset();   // Resetting cards if player chooses to play again
     int calculateHands(bool actualValue);   // Calculates hands
     int calculateCards();   // Calculates cards
