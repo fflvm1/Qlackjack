@@ -64,4 +64,10 @@
         <file>assets/cardSpades_K.png</file>
         <file>assets/cardSpades_Q.png</file>
     </qresource>
+    <qresource prefix="/sfx">
+        <file>sound/flipCard.wav</file>
+        <file>sound/lose.wav</file>
+        <file>sound/stand.wav</file>
+        <file>sound/victory.wav</file>
+    </qresource>
 </RCC>

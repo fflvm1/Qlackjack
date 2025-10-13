@@ -27,6 +27,7 @@ public:
     void gameOver();    // Function used to set buttons like Play Again visible, and set buttons like Hit or Htand to be invisible
     void addPlayerCard(int value);
     void addDealerCard(int value, bool isSecondCard = false);
+    void playSound(const QString &path);    // Function that plays sound via path
 
 private slots:
     void on_hit_clicked();  // Function that triggers upon player pressing the Hit button

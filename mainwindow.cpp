@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QTimer>
+#include <QSoundEffect>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -69,6 +70,7 @@ void MainWindow::initialise() {
 // When the Hit button is pressed
 void MainWindow::on_hit_clicked()
 {
+    playSound("qrc:/sfx/sound/flipCard.wav");  // Play the hitting sound
     int hitValue = p.hit();    // Triggers player's hit function and stores the value of the hit
     addPlayerCard(hitValue);    // Adds a card corresponding to the value
     ui->statusBar->showMessage("Player hits");  // The statusbar reflects player's action
@@ -80,6 +82,7 @@ void MainWindow::on_hit_clicked()
 // When the Stand button is pressed
 void MainWindow::on_stand_clicked()
 {
+    playSound("qrc:/sfx/sound/stand.wav");  // Play the standing sound
     ui->hit->setVisible(false); // Sets the Hit button's visibility to invisible
     ui->stand->setVisible(false);   // Same for the Stand button
     ui->statusBar->showMessage("Player stands");    // Changes the statusbar's message to reflect what just happened
@@ -96,10 +99,12 @@ void MainWindow::checkState(bool isDealer, bool init) {
                 gameOver(); // If it is, hide the unnecessary, show the necessary
                 ui->finish_message->setText("Dealer won!"); // Change the "action message" to reflect the dealer's victory
                 ui->statusBar->showMessage("Dealer won. Better luck next time!");   // Change the status bar to reflect his victory
+                playSound("qrc:/sfx/sound/lose.wav");   // Play the game over sound effect
         }   else if (d.calculateHands(true) > 21) { // If the dealer went out of bounds
                 gameOver(); // Hide the unnecessary, show the necessary
                 ui->finish_message->setText("Dealer out of bounds.");   // Change the "action message" to reflect the dealer's loss
                 ui->statusBar->showMessage("You won! Congratulations!");    // Chanhe the statusbar message to reflect player's victory
+                playSound("qrc:/sfx/sound/victory.wav");    // Play the victory chime
         }   else {  // If the dealer didn't lose but didn't win either and the game continues
                 if (!init) {    // We check if this function was not triggered during the initialisation process
                     ui->hit->setVisible(true);  // Make the Hit button visible again
@@ -111,10 +116,12 @@ void MainWindow::checkState(bool isDealer, bool init) {
                 gameOver(); // Hide the unnecessary, show the necessary
                 ui->finish_message->setText("Player won!"); // Change the "action message" to reflect player's victory
                 ui->statusBar->showMessage("You won! Congratulations!");    // Change the statusbar message to reflect the same thing
+                playSound("qrc:/sfx/sound/victory.wav");    // Play the victory chime
         }   else if (p.calculateHands() > 21) { // If the player went out of bounds
                 gameOver(); // Hide the unnecessary, show the necessary
                 ui->finish_message->setText("Player out of bounds.");   // We change the "action message"
                 ui->statusBar->showMessage("Dealer won. Better luck next time!");   // Same thing with the statusbar
+                playSound("qrc:/sfx/sound/lose.wav");   // Play the game over sound effect
         }   else {  // If the player didn't win or lose
                 if (!init) {    // We check if the function wasn't triggered during the initialisation process
                     ui->hit->setVisible(false); // Hide the Hit button
@@ -134,8 +141,10 @@ void MainWindow::dealerHit() {
     if (hitValue != 0) {  // Checks if the value is NOT set to 0.
         ui->statusBar->showMessage("Dealer hits");  // If it's not, dealer chose to hit and we update the statusbar message
         addDealerCard(hitValue);    // Add a card to the dealer's deck corresponding to the hit value
+        playSound("qrc:/sfx/sound/flipCard.wav");   // Play the flipping card sound to indicate a hit
     }   else {  // If the value is set to 0
         ui->statusBar->showMessage("Dealer stands");    // The dealer chose to stand, update the statusbar message
+        playSound("qrc:/sfx/sound/stand.wav");  // Play the putting card back sound to indicate a stand
     }
 
     ui->dealer_hands->setText(QString::number(d.calculateHands(false)));    // Update the total value without revealing the second card
@@ -181,4 +190,18 @@ void MainWindow::addDealerCard(int value, bool isSecondCard) {
         secondCard = card;  // We save a pointer to it
         secondCardValue = value;    // We save it's value
     }
+}
+
+// Play sound via path
+void MainWindow::playSound(const QString &path)
+{
+    QSoundEffect *effect = new QSoundEffect(this);  // Create a new sound effect
+    effect->setSource(QUrl(path));  // Set the source to provided path
+    effect->setVolume(0.8f);   // Set volume (from 0.0 to 1.0)
+    effect->play(); // Play the following SFX
+
+    // Delete when finished to prevent memory buildup
+    connect(effect, &QSoundEffect::playingChanged, effect, [effect]() {
+        if (!effect->isPlaying()) effect->deleteLater();
+    });
 }
