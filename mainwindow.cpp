@@ -214,13 +214,13 @@ void MainWindow::gameOver() {
 void MainWindow::addPlayerCard(int value) {
     // We draw a card based on the value and the fact that it's not the dealer's second card
     QLabel* card = drawcard->createCard(value, false);
-    ui->playerDeck->insertWidget(0, card);  // Insert the widget to the playerdeck
+    ui->playerDeck->insertWidget(-1, card);  // Insert the widget to the playerdeck
 }
 
 // Add a card to dealer's deck
 void MainWindow::addDealerCard(int value, bool isSecondCard) {
     QLabel* card = drawcard->createCard(value, isSecondCard);   // Draw a card with specified value and whether it's a second card or not
-    ui->dealerDeck->insertWidget(-1, card); // Insert it to the right side of the dealer's deck
+    ui->dealerDeck->insertWidget(0, card); // Insert it to the right side of the dealer's deck
     if (isSecondCard) { // If we're adding the second card
         secondCard = card;  // We save a pointer to it
         secondCardValue = value;    // We save it's value
