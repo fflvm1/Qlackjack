@@ -9,18 +9,30 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    about.cpp \
+    aimode.cpp \
     drawcard.cpp \
     main.cpp \
     mainwindow.cpp \
-    player.cpp
+    player.cpp \
+    stats.cpp \
+    wallpapersettings.cpp
 
 HEADERS += \
+    about.h \
+    aimode.h \
     drawcard.h \
     mainwindow.h \
-    player.h
+    player.h \
+    stats.h \
+    wallpapersettings.h
 
 FORMS += \
-    mainwindow.ui
+    about.ui \
+    aimode.ui \
+    mainwindow.ui \
+    stats.ui \
+    wallpapersettings.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

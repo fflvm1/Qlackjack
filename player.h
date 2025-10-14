@@ -19,7 +19,7 @@ private:
 class Dealer
 {
 public:
-    int hit(); // Dealer's AI
+    int hit(int mode); // Dealer's AI
     void reset();   // Resetting cards if player chooses to play again
     int calculateHands(bool actualValue);   // Calculates hands
     int calculateCards();   // Calculates cards

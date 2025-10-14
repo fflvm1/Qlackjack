@@ -33,12 +33,35 @@ void Player::reset() {
 }
 
 // Dealer: Hitting logic
-int Dealer::hit() {
-    if (calculateHands(true) < 17) {    // Checks if the total value of all cards is less than 17
-        int newCardValue = QRandomGenerator::global()->bounded(1, 12);    // If so, dealer hits
-        cards.push_back(newCardValue);
-        return newCardValue;
+int Dealer::hit(int mode) {
+    if (mode == 0) {    // Mode: Default
+        if (calculateHands(true) < 17) {    // Checks if the total value of all cards is less than 17
+            int newCardValue = QRandomGenerator::global()->bounded(1, 12);    // If so, dealer hits
+            cards.push_back(newCardValue);  // Save the hit value to array
+            return newCardValue;    // Return the hit value
+        }
+    }   else if (mode == 1) {   // Mode: Always hit
+        int newCardValue = QRandomGenerator::global()->bounded(1, 12);  // Generate hit value
+        cards.push_back(newCardValue);  // Save the hit value to array
+        return newCardValue;    // Return the hit value
+    }   else if (mode == 2) {   // Mode: Always stand
+        return 0;   // Just returns 0, meaning dealer chose to stand
+    }   else if (mode == 3) {   // Mode: Random
+        int randomChoice = QRandomGenerator::global()->bounded(1, 3);   // Makes a 50/50 bet whether to hit or not
+            switch(randomChoice) {  // Switch on the decision
+                case 1:{    // If 1
+                    int newCardValue = QRandomGenerator::global()->bounded(1, 12);  // That's a hit
+                    cards.push_back(newCardValue);  // Add the hit value to the array
+                    return newCardValue;    // Return it
+                }
+                case 2:{    // If 2
+                    return 0;   // Dealer stands
+                }
+                default:    // If the value is something else
+                    qDebug() << "Learn to code idiot";  // I think this is self-explanatory.
+        }
     }
+
     return 0;   // Otherwise, dealer stands
 }
 
