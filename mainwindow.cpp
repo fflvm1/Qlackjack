@@ -200,10 +200,10 @@ void MainWindow::gameOver() {
     ui->stand->setVisible(false);   // Hides the Stand button
     ui->d_hands_text->setText(dealerName + "'s hands(actual): ");  // Updates the dealer's hands text to reflect that actual value has been revealed
     ui->dealer_hands->setText(QString::number(d.calculateHands(true))); // Reveal dealer's total value in hands
-    secondCard->deleteLater();  // Remove the second card
-    ui->dealerDeck->removeWidget(secondCard);   // Remove it completely
+    QLabel* card = drawcard->createCard(secondCardValue, false);    // Create a replacement card with uncovered value
+    ui->dealerDeck->replaceWidget(secondCard, card);    // Replace the covered card with an uncovered
+    secondCard->deleteLater();  // Remove the covered version completely
     secondCard = nullptr;   // Clear the pointer
-    addDealerCard(secondCardValue); // Add a replacement card matching it's original value
 
     QTimer::singleShot(1500, this, [this]() {   // Timer
         ui->play_again->setVisible(true);   // Shows the Play Again button
