@@ -26,6 +26,7 @@ private slots:
 private:
     Ui::WallpaperSettings *ui;
     MainWindow *mw; // Reference to the main window
+    int wallpaperID = 2;    // Selected wallpaper ID
 };
 
 #endif // WALLPAPERSETTINGS_H

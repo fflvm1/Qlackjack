@@ -65,6 +65,7 @@ private:
     bool isGameActive = false;  // Checks if the game is active(necessary to punish people for restarting the game in the middle)
     int wins = 0;   // Victories(to be imported from QSettings)
     int losses = 0; // Losses(to be imported from QSettings)
+    int currentWallpaperId = 1; // Keep track of current background
 
 protected:
     void resizeEvent(QResizeEvent *event) override; // Function that triggers upon resizing the window(to fit the background without tiling)

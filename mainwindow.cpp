@@ -18,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->playerDeck->setAlignment(Qt::AlignLeft);    // Ensures that cards appear on the left side of the player's deck
     ui->dealerDeck->setAlignment(Qt::AlignRight);   // Ensures that cards appear on the right side of the dealer's deck
-    changeWallpaper(2); // Set the default wallpaper to number 2
     loadStats();    // Load stats
+    changeWallpaper(currentWallpaperId); // Set the default wallpaper to number 2
     initialise();   // Initialise game
 }
 
@@ -259,6 +259,7 @@ void MainWindow::on_actionChange_Player_s_Name_triggered()
         // Update the two labels
         ui->p_cards_text->setText(playerName + "'s cards: ");
         ui->p_hands_text->setText(playerName + "'s hands: ");
+        saveStats();    // Save the player name
     }
 }
 
@@ -279,7 +280,8 @@ void MainWindow::on_actionChange_Dealer_s_Name_triggered()
         dealerName = newName;   // Update the dealer name variable
         // Update the two labels
         ui->d_cards_text->setText(dealerName + "'s cards: ");
-        ui->d_hands_text->setText(dealerName + "'s hands: ");
+        ui->d_hands_text->setText(dealerName + "'s hands(approx.): ");
+        saveStats();    // Save the dealer name
     }
 }
 
@@ -300,13 +302,9 @@ void MainWindow::on_actionChange_Wallpaper_triggered() {
     ws.exec();  // Ensure that it actually appears on the screen
 }
 
-int currentWallpaperId = 1; // Keep track of current background
-
 // Change wallpaper function
 void MainWindow::changeWallpaper(int id)
 {
-    currentWallpaperId = id;    // Sets the current wallpaper ID to match the newly set ID
-
     // Load background image
     QPixmap bg(":/backgrounds/assets/background_" + QString::number(id) + ".png");
     if (bg.isNull()) {  // If it fails to load
@@ -351,6 +349,9 @@ void MainWindow::loadStats() {
     QSettings settings("FFNETWORK", "Qlackjack");   // Load the stats
     wins = settings.value("wins", 0).toInt();   // Convert the wins to an integer
     losses = settings.value("losses", 0).toInt();   // Convert the losses to an integer
+    currentWallpaperId = settings.value("wallpaperID", 2).toInt();  // Get the current wallpaper
+    playerName = settings.value("playerName", "Player").toString(); // Get the saved player name
+    dealerName = settings.value("dealerName", "Dealer").toString(); // Get the saved dealer name
 }
 
 // Save stats
@@ -358,6 +359,8 @@ void MainWindow::saveStats() {
     QSettings settings("FFNETWORK", "Qlackjack");   // Load the current stats
     settings.setValue("wins", wins);    // Set wins to match the wins variable
     settings.setValue("losses", losses);    // Set losses to match the losses variable
+    settings.setValue("playerName", playerName);    // Save the player name
+    settings.setValue("dealerName", dealerName);    // Save the dealer name
 }
 
 // When the player closes the window
