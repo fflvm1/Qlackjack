@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPointer>
 #include "player.h"
 #include "drawcard.h"
 
@@ -65,7 +66,7 @@ private:
     Ui::MainWindow *ui; // The UI pointer
     Player p;   //  The player
     Dealer d;   // The dealer
-    QLabel* secondCard = nullptr;   // Pointer to dealer's second card
+    QPointer<QLabel> secondCard;   // Pointer to dealer's second card
     int secondCardValue = 0;    // Value of the second card
     bool isGameActive = false;  // Checks if the game is active(necessary to punish people for restarting the game in the middle)
     int wins = 0;   // Victories(to be imported from QSettings)

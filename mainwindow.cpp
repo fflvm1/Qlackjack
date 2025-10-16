@@ -198,10 +198,12 @@ void MainWindow::gameOver() {
     ui->stand->setVisible(false);   // Hides the Stand button
     ui->d_hands_text->setText(dealerName + "'s hands(actual): ");  // Updates the dealer's hands text to reflect that actual value has been revealed
     ui->dealer_hands->setText(QString::number(d.calculateHands(true))); // Reveal dealer's total value in hands
-    QLabel* card = drawcard->createCard(secondCardValue, false);    // Create a replacement card with uncovered value
-    ui->dealerDeck->replaceWidget(secondCard, card);    // Replace the covered card with an uncovered
-    secondCard->deleteLater();  // Remove the covered version completely
-    secondCard = nullptr;   // Clear the pointer
+    if (secondCard) {   // Check if the pointer still exists to prevent crashes when starting the game & player getting Blackjack at the same time
+        QLabel* card = drawcard->createCard(secondCardValue, false);    // Create a replacement card with uncovered value
+        ui->dealerDeck->replaceWidget(secondCard, card);    // Replace the covered card with an uncovered
+        secondCard->deleteLater();  // Remove the covered version completely
+        secondCard = nullptr;   // Clear the pointer
+    }
 
     QTimer::singleShot(1500, this, [this]() {   // Timer
         ui->play_again->setVisible(true);   // Shows the Play Again button
@@ -436,7 +438,7 @@ void MainWindow::giveCardsBeginning(int i) {
     checkState(false, true);    // Checks if player had won/lost
 
     QTimer::singleShot(600, this, [this, i]() { // Timer
-    int dealerHitValue = d.hit(0);    // Forces the dealer to hit
+    int dealerHitValue = d.hit(1);    // Forces the dealer to hit
     if (i == 1) {   // If it's the second hit, hide the card
         addDealerCard(dealerHitValue, true);
         // Make the Hit and Stand buttons visible
