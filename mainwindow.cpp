@@ -42,6 +42,7 @@ MainWindow::~MainWindow()
 
 // Initialisation function
 void MainWindow::initialise() {
+    enableStartGameButton = false;  // Make sure that the Play Again button can't appear
     ui->actionNew_Game->setEnabled(false);  // Make sure that the player can't start a new game till the end of the animation
     // Makes the Play Again button & the finish message invisible
     ui->play_again->setVisible(false);
@@ -193,6 +194,7 @@ void MainWindow::on_play_again_clicked()
 // The hiding unnecessary & showing the necessary function, or whatever name that i gave it
 void MainWindow::gameOver() {
     isGameActive = false;   // Set the game active status to false to prevent hitting new game counting as a loss
+    enableStartGameButton = true;   // Ensure that the Play Again button can appear
     ui->finish_message->setVisible(true);   // Shows the "action message"
     ui->hit->setVisible(false); // Hides the Hit button
     ui->stand->setVisible(false);   // Hides the Stand button
@@ -206,7 +208,9 @@ void MainWindow::gameOver() {
     }
 
     QTimer::singleShot(1500, this, [this]() {   // Timer
-        ui->play_again->setVisible(true);   // Shows the Play Again button
+        if (enableStartGameButton) {    // If the button still can appear
+            ui->play_again->setVisible(true);   // Show the Play Again button
+        }
     });
 }
 
@@ -442,9 +446,13 @@ void MainWindow::giveCardsBeginning(int i) {
     if (i == 1) {   // If it's the second hit, hide the card
         addDealerCard(dealerHitValue, true);
         // Make the Hit and Stand buttons visible
-        ui->hit->setVisible(true);
-        ui->stand->setVisible(true);
-        ui->actionNew_Game->setEnabled(true);   // Make it possible to start a new game again
+        if (!enableStartGameButton) {   // If the Play Again button can't be shown
+            ui->hit->setVisible(true);  // Show the hit button
+            ui->stand->setVisible(true);    // Show the stand button
+        }
+        QTimer::singleShot(400, this, [this]() {
+            ui->actionNew_Game->setEnabled(true);   // Make it possible to start a new game again
+        });
     }   else {  // Otherwise don't
         addDealerCard(dealerHitValue);
     }
