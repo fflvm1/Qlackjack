@@ -15,6 +15,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     player.cpp \
+    settings.cpp \
     stats.cpp \
     wallpapersettings.cpp
 
@@ -24,6 +25,7 @@ HEADERS += \
     drawcard.h \
     mainwindow.h \
     player.h \
+    settings.h \
     stats.h \
     wallpapersettings.h
 
@@ -31,6 +33,7 @@ FORMS += \
     about.ui \
     aimode.ui \
     mainwindow.ui \
+    settings.ui \
     stats.ui \
     wallpapersettings.ui
 

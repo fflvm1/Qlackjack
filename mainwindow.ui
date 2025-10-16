@@ -168,6 +168,9 @@
        </property>
        <item>
         <widget class="QFrame" name="frame">
+         <property name="styleSheet">
+          <string notr="true">color: white;</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Shape::HLine</enum>
          </property>
@@ -239,6 +242,9 @@
                    <strikeout>false</strikeout>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
+                 </property>
                  <property name="text">
                   <string>Player's hands: </string>
                  </property>
@@ -257,6 +263,9 @@
                    <pointsize>16</pointsize>
                    <strikeout>false</strikeout>
                   </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -285,6 +294,9 @@
                    <strikeout>false</strikeout>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
+                 </property>
                  <property name="text">
                   <string>Dealer's hands: </string>
                  </property>
@@ -297,6 +309,9 @@
                    <pointsize>16</pointsize>
                    <strikeout>false</strikeout>
                   </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -348,6 +363,9 @@
                    <bold>false</bold>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
+                 </property>
                  <property name="text">
                   <string>Player's cards: </string>
                  </property>
@@ -365,6 +383,9 @@
                   <font>
                    <pointsize>16</pointsize>
                   </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -398,6 +419,9 @@
                    <bold>false</bold>
                   </font>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
+                 </property>
                  <property name="text">
                   <string>Dealer's cards: </string>
                  </property>
@@ -415,6 +439,9 @@
                   <font>
                    <pointsize>16</pointsize>
                   </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">color: white;</string>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -451,6 +478,8 @@
     <addaction name="actionView_Stats"/>
     <addaction name="separator"/>
     <addaction name="actionChange_Wallpaper"/>
+    <addaction name="actionEnable_Sounds"/>
+    <addaction name="actionSettings"/>
    </widget>
    <widget class="QMenu" name="menuPlayers">
     <property name="title">
@@ -502,9 +531,6 @@
    <property name="text">
     <string>AI Presets</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+,</string>
-   </property>
   </action>
   <action name="actionAbout">
    <property name="text">
@@ -513,7 +539,29 @@
   </action>
   <action name="actionChange_Wallpaper">
    <property name="text">
-    <string>Change Wallpaper</string>
+    <string>Customisation</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+,</string>
+   </property>
+  </action>
+  <action name="actionEnable_Sounds">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enable Sound</string>
    </property>
   </action>
  </widget>

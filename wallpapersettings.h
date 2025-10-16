@@ -23,6 +23,18 @@ private slots:
 
     void on_bg_3_clicked(); // When the player selects the third background
 
+    void on_custom_bg_clicked();    // When player sets a custom background
+
+    void on_random_clicked();   // When player chooses to set a random card back
+
+    void on_custom_clicked();   // When player chooses to set a custon card back
+
+    void on_blueCard_clicked(); // When the player chooses to set a blue card back
+
+    void on_greenCard_clicked();    // When the player chooses to set a green card back
+
+    void on_redCard_clicked();  // When player chooses to set a red card back
+
 private:
     Ui::WallpaperSettings *ui;
     MainWindow *mw; // Reference to the main window

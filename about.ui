@@ -24,7 +24,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>128</width>
+       <width>110</width>
        <height>128</height>
       </size>
      </property>
@@ -60,7 +60,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Version 1.0(151025)</string>
+        <string>Version 1.0(161025)</string>
        </property>
       </widget>
      </item>

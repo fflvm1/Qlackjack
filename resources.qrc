@@ -71,9 +71,9 @@
         <file>sound/victory.wav</file>
     </qresource>
     <qresource prefix="/backgrounds">
-        <file>assets/background_1.png</file>
         <file>assets/background_2.png</file>
         <file>assets/background_3.png</file>
+        <file>assets/background_1.png</file>
     </qresource>
     <qresource prefix="/appIcon">
         <file>assets/QlackjackIcon.png</file>

@@ -23,4 +23,11 @@ Stats::~Stats()
 void Stats::setStats(int wins, int losses) {
     ui->wins->setText(QString::number(wins));   // Sets wins
     ui->losses->setText(QString::number(losses));   // Sets losses
+    double winningPercentage = 0.0; // Winning percentage
+    if (wins + losses > 0) {    // If winning + losses combo exceeds 0
+        winningPercentage = static_cast<double>(wins) / (wins + losses) * 100.0;    // Get the percentage
+    }
+    QString percentString = QString::number(winningPercentage, 'f', 2) + "%";   /* Format it in a way that cuts most of the numbers after the dot,
+    besides just two */
+    ui->winningPercent->setText(percentString); // Set the formatted percentage in the text
 }

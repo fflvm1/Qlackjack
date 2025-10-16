@@ -8,12 +8,15 @@ AiMode::AiMode(MainWindow *w)
     mw = w; // Set mw to the reference to main window from constructor
     this->setFixedSize(400, 300); // Lock current size
     ui->setupUi(this);
+    defaultAiMode = mw->aiMode; // Remember the AI mode used before any changes
 }
 
 AiMode::~AiMode()
 {
     mw->aiMode = ui->listWidget->currentRow();  // Set the AI mode to match the selected mode
-    mw->initialise();
+    if (defaultAiMode != ui->listWidget->currentRow()) {
+        mw->initialise();   // Only reinitisialise the game if AI preset has been changed
+    }
 
     delete ui;
 }

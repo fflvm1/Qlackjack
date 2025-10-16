@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "about.h"
+#include "settings.h"
 #include "stats.h"
 #include "ui_mainwindow.h"
 #include "wallpapersettings.h"
@@ -18,13 +19,24 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->playerDeck->setAlignment(Qt::AlignLeft);    // Ensures that cards appear on the left side of the player's deck
     ui->dealerDeck->setAlignment(Qt::AlignRight);   // Ensures that cards appear on the right side of the dealer's deck
-    loadStats();    // Load stats
-    changeWallpaper(currentWallpaperId); // Set the default wallpaper to number 2
+    loadStats();    // Load save
+    if (currentWallpaperId != 0) {  // Check if the saved wallpaper is NOT a custom one
+        changeWallpaper(currentWallpaperId); // If it's not, show the last saved wallpaper or the default(second) wallpaper
+    }   else {  // If it a custom one
+            changeWallpaper(customWallpaperPath);   // Change the wallpaper to that path
+        }
+    ui->actionEnable_Sounds->setChecked(enableSounds);  // Make enableSounds checked/unchecked based on if the sounds were enabled during the save
     initialise();   // Initialise game
 }
 
 MainWindow::~MainWindow()
 {
+    // Give player a loss if they quit mid-game
+    if (isGameActive) { // Check if the game is active
+        losses++;   // If yes, increase losses
+        saveStats();    // Save stats
+    }
+
     delete ui;
 }
 
@@ -230,15 +242,17 @@ void MainWindow::addDealerCard(int value, bool isSecondCard) {
 // Play sound via path
 void MainWindow::playSound(const QString &path)
 {
-    QSoundEffect *effect = new QSoundEffect(this);  // Create a new sound effect
-    effect->setSource(QUrl(path));  // Set the source to provided path
-    effect->setVolume(0.8f);   // Set volume (from 0.0 to 1.0)
-    effect->play(); // Play the following SFX
+    if (enableSounds) { // Play sounds only if the player has them enabled
+        QSoundEffect *effect = new QSoundEffect(this);  // Create a new sound effect
+        effect->setSource(QUrl(path));  // Set the source to provided path
+        effect->setVolume(0.8f);   // Set volume (from 0.0 to 1.0)
+        effect->play(); // Play the following SFX
 
-    // Delete when finished to prevent memory buildup
-    connect(effect, &QSoundEffect::playingChanged, effect, [effect]() {
-        if (!effect->isPlaying()) effect->deleteLater();
-    });
+        // Delete when finished to prevent memory buildup
+        connect(effect, &QSoundEffect::playingChanged, effect, [effect]() {
+            if (!effect->isPlaying()) effect->deleteLater();
+        });
+    }
 }
 
 // Changing player's name
@@ -302,7 +316,7 @@ void MainWindow::on_actionChange_Wallpaper_triggered() {
     ws.exec();  // Ensure that it actually appears on the screen
 }
 
-// Change wallpaper function
+// Change wallpaper function(for default wallpapers)
 void MainWindow::changeWallpaper(int id)
 {
     // Load background image
@@ -321,13 +335,37 @@ void MainWindow::changeWallpaper(int id)
     this->setAutoFillBackground(true);  // Ensure auto filling is on
 }
 
+// Change wallpaper to a custom one.
+void MainWindow::changeWallpaper(const QString &filePath)
+{
+    // Load background image
+    QPixmap bg(filePath);
+    if (bg.isNull()) {  // If it fails to load
+        qWarning() << "Failed to load wallpaper with from" << filePath;
+        currentWallpaperId = 2; // Set the default wallpaper to the second one if the file is missing
+        return; // Quit function abruptly
+    }
+
+    // Scale it perfectly to current window size
+    QPixmap scaled = bg.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+
+    QPalette palette;
+    palette.setBrush(QPalette::Window, scaled); // Make the background scaled
+    this->setPalette(palette);  // Set the background
+    this->setAutoFillBackground(true);  // Ensure auto filling is on
+}
+
 // When the player tries to resize the window
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QMainWindow::resizeEvent(event);
 
     // Reapply the wallpaper dynamically on every resize(to prevent tiling)
-    changeWallpaper(currentWallpaperId);
+    if (currentWallpaperId != 0) {  // If the wallpaper is NOT custom
+        changeWallpaper(currentWallpaperId);    // Set it based on the ID
+    }   else {  // If it's custom
+            changeWallpaper(customWallpaperPath);   // Set one from the provided path
+    }
 }
 
 // When the player views stats
@@ -352,6 +390,12 @@ void MainWindow::loadStats() {
     currentWallpaperId = settings.value("wallpaperID", 2).toInt();  // Get the current wallpaper
     playerName = settings.value("playerName", "Player").toString(); // Get the saved player name
     dealerName = settings.value("dealerName", "Dealer").toString(); // Get the saved dealer name
+    enableSounds = settings.value("enableSounds", true).toBool();   // Check if the sound is enabled
+    customWallpaperPath = settings.value("wallpaperPath", "").toString();   // Get the custom wallpaper location
+    ui->p_cards_text->setText(playerName + "'s cards: ");
+    ui->p_hands_text->setText(playerName + "'s hands: ");
+    ui->d_hands_text->setText(dealerName + "'s hands(approx.): ");
+    ui->d_cards_text->setText(dealerName + "'s cards: ");
 }
 
 // Save stats
@@ -361,16 +405,7 @@ void MainWindow::saveStats() {
     settings.setValue("losses", losses);    // Set losses to match the losses variable
     settings.setValue("playerName", playerName);    // Save the player name
     settings.setValue("dealerName", dealerName);    // Save the dealer name
-}
-
-// When the player closes the window
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    if (isGameActive) { // Check if the game is active
-        losses++;   // If yes, increase losses
-        saveStats();    // Save stats
-    }
-    event->accept();    // Let the window close
+    settings.setValue("enableSounds", enableSounds);    // Save player's sound preferences
 }
 
 // Open AI presets window
@@ -384,4 +419,23 @@ void MainWindow::on_actionAI_Settings_triggered() {
 void MainWindow::on_actionAbout_triggered() {
     About a;    // Create the window
     a.exec();   // Show it
+}
+
+// Unified settings
+void MainWindow::on_actionSettings_triggered() {
+    Settings* s = new Settings(this);   // Creates the settings window with a reference to the main window
+    s->updateDefault(aiMode);   // Updates the default selected AI preset based on what's actually selected
+    s->exec();  // Shows the window
+    delete s;   // Removes it afterwards(as it crashes upon regular deletion for some reason)
+}
+
+// Enabling/disabling sound via the action bar
+void MainWindow::on_actionEnable_Sounds_toggled(bool checked) {
+    if (checked) {  // If the action is ticked
+        enableSounds = true;    // Enable sounds
+        saveStats();    // Save the settings
+    }   else {  // If the action is not ticked
+        enableSounds = false;   // Disable sounds
+        saveStats();    // Save the settings
+    }
 }

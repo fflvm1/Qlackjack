@@ -1,4 +1,5 @@
 #include "drawcard.h"
+#include <QtCore/qsettings.h>
 
 DrawCard::DrawCard(QWidget* parent) {
     parentWidget = parent;  // Gets a pointer to the main window
@@ -43,8 +44,35 @@ QLabel* DrawCard::createCard(int value, bool isDealersSecondCard)
                        .arg(suit.left(1).toUpper() + suit.mid(1))  // Converts it to match the format, e.g. "Hearts"
                        .arg(cardName);  // The number at the end(e.g. 2, Q)
     }   else {  // If it is the second card
-            QString backColor = randomBackColour(); // Choose a random back colour
-            path = QString(":/card_back/assets/cardBack%1.png").arg(backColor); // Construct a proper path
+            QSettings settings("FFNETWORK", "Qlackjack");   // Load save
+            int backID = settings.value("cardBackID", 0).toInt();   // Check the chosen by player card in customisation settings
+            switch(backID) {
+                case 0:{    // If it's set to random
+                    QString backColor = randomBackColour(); // Choose a random back colour
+                    path = QString(":/card_back/assets/cardBack%1.png").arg(backColor); // Construct a proper path
+                    break;
+                }
+                case 1:{    // If it's a blue card
+                    path = QString(":/card_back/assets/cardBackBlue.png");  // Make the back always blue
+                    break;
+                }
+                case 2:{    // If it's the green card
+                    path = QString(":/card_back/assets/cardBackGreen.png"); // Make the back always green
+                    break;
+                }
+                case 3:{    // If it's a red card
+                    path = QString(":/card_back/assets/cardBackRed.png");   // Make the back always red
+                    break;
+                }
+                case 4:{    // If it's a custom card
+                    path = settings.value("cardBackPath", "").toString();   // Get path to that image
+                    if (QPixmap(path).isNull()) {   // Check if the custom back exists before actually setting it
+                        qWarning() << "User entered an invalid card back path! Reverting to a different image...";  // If not, pring a warning
+                        path = QString(":/card_back/assets/cardBackRed.png");   // And revert the path to a normal back that actually exists
+                    }
+                    break;
+                }
+            }
     }
 
     QPixmap pixmap(path);   // Use the image's path to create a pixmap
