@@ -69,6 +69,7 @@
         <file>sound/lose.wav</file>
         <file>sound/stand.wav</file>
         <file>sound/victory.wav</file>
+        <file>sound/place_cards.wav</file>
     </qresource>
     <qresource prefix="/backgrounds">
         <file>assets/background_2.png</file>

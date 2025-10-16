@@ -42,12 +42,14 @@ MainWindow::~MainWindow()
 
 // Initialisation function
 void MainWindow::initialise() {
+    ui->actionNew_Game->setEnabled(false);  // Make sure that the player can't start a new game till the end of the animation
     // Makes the Play Again button & the finish message invisible
     ui->play_again->setVisible(false);
     ui->finish_message->setVisible(false);
-    // Makes the Hit and Stand buttons visible
-    ui->hit->setVisible(true);
-    ui->stand->setVisible(true);
+    // Ensure hit & stand animations are hidden till the end of the animation
+    ui->hit->setVisible(false);
+    ui->stand->setVisible(false);
+    // Update labels
     ui->p_cards_text->setText(playerName + "'s cards: ");
     ui->p_hands_text->setText(playerName + "'s hands: ");
     ui->d_hands_text->setText(dealerName + "'s hands(approx.): "); /* Changes the dealer's hands text to reflect that the value is only approximate
@@ -66,28 +68,12 @@ void MainWindow::initialise() {
         delete item;
     }
 
-    int playerHitValue = 0; // Player's hit value placeholder
-    int dealerHitValue = 0; // Dealer's hit value placeholder
-
+    playSound("qrc:/sfx/sound/place_cards.wav");    // Play the giving cards sound
     // Loop that adds two cards to the player & the dealer
     for (int i = 0; i < 2; i++) {
-        playerHitValue = p.hit();    // Forces the player to hit and stores the hit value
-        addPlayerCard(playerHitValue);  // Draws an image of the card on the player's side of the deck
-        // Changes the hands & cards count to reflect the changes in the array
-        ui->player_hands->setText(QString::number(p.calculateHands()));
-        ui->player_cards->setText(QString::number(p.calculateCards()));
-        checkState(false, true);    // Checks if player had won/lost
-
-        dealerHitValue = d.hit(0);    // Forces the dealer to hit
-        if (i == 1) {   // If it's the second hit, hide the card
-            addDealerCard(dealerHitValue, true);
-        }   else {  // Otherwise don't
-            addDealerCard(dealerHitValue);
-        }
-        // Changes the hands & cards count to reflect the changes in the array
-        ui->dealer_hands->setText(QString::number(d.calculateHands(false)));
-        ui->dealer_cards->setText(QString::number(d.calculateCards()));
-        checkState(true, true); // Checks if the dealer had lost or won
+        QTimer::singleShot(i * 1000, this, [this, i]() {    // Timer
+            giveCardsBeginning(i);
+        });
     }
 }
 
@@ -438,4 +424,31 @@ void MainWindow::on_actionEnable_Sounds_toggled(bool checked) {
         enableSounds = false;   // Disable sounds
         saveStats();    // Save the settings
     }
+}
+
+// Gives cards to the player and the dealer at the beginning of the game
+void MainWindow::giveCardsBeginning(int i) {
+    int playerHitValue = p.hit();    // Forces the player to hit and stores the hit value
+    addPlayerCard(playerHitValue);  // Draws an image of the card on the player's side of the deck
+    // Changes the value & cards count to reflect the changes in the array
+    ui->player_hands->setText(QString::number(p.calculateHands()));
+    ui->player_cards->setText(QString::number(p.calculateCards()));
+    checkState(false, true);    // Checks if player had won/lost
+
+    QTimer::singleShot(600, this, [this, i]() { // Timer
+    int dealerHitValue = d.hit(0);    // Forces the dealer to hit
+    if (i == 1) {   // If it's the second hit, hide the card
+        addDealerCard(dealerHitValue, true);
+        // Make the Hit and Stand buttons visible
+        ui->hit->setVisible(true);
+        ui->stand->setVisible(true);
+        ui->actionNew_Game->setEnabled(true);   // Make it possible to start a new game again
+    }   else {  // Otherwise don't
+        addDealerCard(dealerHitValue);
+    }
+    // Changes the hands & cards count to reflect the changes in the array
+    ui->dealer_hands->setText(QString::number(d.calculateHands(false)));
+    ui->dealer_cards->setText(QString::number(d.calculateCards()));
+    checkState(true, true); // Checks if the dealer had lost or won
+    });
 }

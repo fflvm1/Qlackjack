@@ -73,6 +73,7 @@ private:
     int currentWallpaperId = 1; // Keep track of current background(via QSettings)
     bool enableSounds = true;   // Sound preferences from QSettings
     QString customWallpaperPath = "";   // Custom wallpaper path(if one is set)
+    void giveCardsBeginning(int i);  // Gives the player and the dealer two cards at the beginning of the game
 
 protected:
     void resizeEvent(QResizeEvent *event) override; // Function that triggers upon resizing the window(to fit the background without tiling)
