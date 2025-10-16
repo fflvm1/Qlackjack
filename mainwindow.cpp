@@ -42,6 +42,8 @@ MainWindow::~MainWindow()
 
 // Initialisation function
 void MainWindow::initialise() {
+    if (!isAnimationInProgress) {   // Only let initialise if the animation is not playing already
+    isAnimationInProgress = true;   // Mark the animation as playing
     enableStartGameButton = false;  // Make sure that the Play Again button can't appear
     ui->actionNew_Game->setEnabled(false);  // Make sure that the player can't start a new game till the end of the animation
     // Makes the Play Again button & the finish message invisible
@@ -76,6 +78,7 @@ void MainWindow::initialise() {
             giveCardsBeginning(i);
         });
     }
+}
 }
 
 // When the Hit button is pressed
@@ -445,6 +448,7 @@ void MainWindow::giveCardsBeginning(int i) {
     int dealerHitValue = d.hit(1);    // Forces the dealer to hit
     if (i == 1) {   // If it's the second hit, hide the card
         addDealerCard(dealerHitValue, true);
+        isAnimationInProgress = false;  // Mark the animation as done
         // Make the Hit and Stand buttons visible
         if (!enableStartGameButton) {   // If the Play Again button can't be shown
             ui->hit->setVisible(true);  // Show the hit button

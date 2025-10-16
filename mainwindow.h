@@ -76,6 +76,7 @@ private:
     QString customWallpaperPath = "";   // Custom wallpaper path(if one is set)
     void giveCardsBeginning(int i);  // Gives the player and the dealer two cards at the beginning of the game
     bool enableStartGameButton = false; // Determines whether the Play Again button can show again or not
+    bool isAnimationInProgress = false;   // Prevents constant reinitialisation of the game
 protected:
     void resizeEvent(QResizeEvent *event) override; // Function that triggers upon resizing the window(to fit the background without tiling)
 };
