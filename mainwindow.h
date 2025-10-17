@@ -5,6 +5,7 @@
 #include <QPointer>
 #include "player.h"
 #include "drawcard.h"
+#include "wallpaperassistant.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -36,6 +37,7 @@ public:
     int aiMode = 0; // Selected AI preset
     QString playerName = "Player";  // Player's default name
     QString dealerName = "Dealer";  // Dealer's default name
+    WallpaperAssistant *wa = new WallpaperAssistant(this);  // Wallpaper assistant
 
 private slots:
     void on_hit_clicked();  // Function that triggers upon player pressing the Hit button
@@ -44,23 +46,8 @@ private slots:
 
     void on_play_again_clicked();   // Function that triggers upon player pressing the Play Again button
 
-    void on_actionChange_Player_s_Name_triggered(); // Event that triggers after player clicks Players -> Change Player's Name
-
-    void on_actionChange_Dealer_s_Name_triggered(); // Event that triggers after player clicks Players -> Change Dealer's Name
-
-    void on_actionNew_Game_triggered(); // Event that triggers after player clicks Game -> New Game
-
-    void on_actionChange_Wallpaper_triggered(); // Event that triggers after player clicks Game -> Change Wallpaper
-
-    void on_actionView_Stats_triggered();   // Event that triggers after player presses Game -> View Stats
-
-    void on_actionAI_Settings_triggered();  // Event that triggers after player presses Players -> AI Settings
-
-    void on_actionAbout_triggered();    // Event that triggers after player presses Help(or app name on Mac) -> About
-
-    void on_actionSettings_triggered(); // When player tries to open new unified settings via Game -> Settings(or app name -> Preferences on Mac)
-
-    void on_actionEnable_Sounds_toggled(bool checked);  // When player ticks/unticks the Enable Sound action in the action bar
+public slots:
+    void on_tabWidget_currentChanged(int index);    // Change tabs/windows
 
 private:
     Ui::MainWindow *ui; // The UI pointer
@@ -78,6 +65,5 @@ private:
     bool enableStartGameButton = false; // Determines whether the Play Again button can show again or not
     bool isAnimationInProgress = false;   // Prevents constant reinitialisation of the game
 protected:
-    void resizeEvent(QResizeEvent *event) override; // Function that triggers upon resizing the window(to fit the background without tiling)
 };
 #endif // MAINWINDOW_H

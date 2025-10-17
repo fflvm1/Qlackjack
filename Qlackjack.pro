@@ -17,6 +17,7 @@ SOURCES += \
     player.cpp \
     settings.cpp \
     stats.cpp \
+    wallpaperassistant.cpp \
     wallpapersettings.cpp
 
 HEADERS += \
@@ -27,6 +28,7 @@ HEADERS += \
     player.h \
     settings.h \
     stats.h \
+    wallpaperassistant.h \
     wallpapersettings.h
 
 FORMS += \
@@ -44,3 +46,23 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES += \
+    ../Qlackjack.pro/AndroidManifest.xml \
+    ../Qlackjack.pro/build.gradle \
+    ../Qlackjack.pro/gradle.properties \
+    ../Qlackjack.pro/gradle/wrapper/gradle-wrapper.jar \
+    ../Qlackjack.pro/gradle/wrapper/gradle-wrapper.properties \
+    ../Qlackjack.pro/gradlew \
+    ../Qlackjack.pro/gradlew.bat \
+    ../Qlackjack.pro/res/values/libs.xml \
+    ../Qlackjack.pro/res/xml/qtprovider_paths.xml \
+    android/AndroidManifest.xml \
+    android/build.gradle \
+    android/res/values/libs.xml \
+    android/res/xml/qtprovider_paths.xml
+
+contains(ANDROID_TARGET_ARCH,arm64-v8a) {
+    ANDROID_PACKAGE_SOURCE_DIR = \
+        $$PWD/../Qlackjack.pro
+}

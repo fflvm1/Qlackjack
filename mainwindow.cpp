@@ -21,9 +21,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dealerDeck->setAlignment(Qt::AlignRight);   // Ensures that cards appear on the right side of the dealer's deck
     loadStats();    // Load save
     if (currentWallpaperId != 0) {  // Check if the saved wallpaper is NOT a custom one
-        changeWallpaper(currentWallpaperId); // If it's not, show the last saved wallpaper or the default(second) wallpaper
+        wa->changeWallpaper(currentWallpaperId); // If it's not, show the last saved wallpaper or the default(second) wallpaper
     }   else {  // If it a custom one
-            changeWallpaper(customWallpaperPath);   // Change the wallpaper to that path
+            wa->changeWallpaper(customWallpaperPath);   // Change the wallpaper to that path
         }
     ui->actionEnable_Sounds->setChecked(enableSounds);  // Make enableSounds checked/unchecked based on if the sounds were enabled during the save
     initialise();   // Initialise game
@@ -250,133 +250,6 @@ void MainWindow::playSound(const QString &path)
     }
 }
 
-// Changing player's name
-void MainWindow::on_actionChange_Player_s_Name_triggered()
-{
-    bool ok;
-    QString newName = QInputDialog::getText(
-        this,
-        tr("Change Player Name"),   // Dialog name
-        tr("Enter a new name for the Player:"), // Dialog title(inside of the window)
-        QLineEdit::Normal,
-        playerName,  // Default text
-        &ok
-        );
-
-    if (ok && !newName.trimmed().isEmpty()) {   // Check if okay had been pressed and if the text isn't empty
-        playerName = newName;   // Update the player name variable
-        // Update the two labels
-        ui->p_cards_text->setText(playerName + "'s cards: ");
-        ui->p_hands_text->setText(playerName + "'s hands: ");
-        saveStats();    // Save the player name
-    }
-}
-
-// Changing dealer's name
-void MainWindow::on_actionChange_Dealer_s_Name_triggered()
-{
-    bool ok;
-    QString newName = QInputDialog::getText(
-        this,
-        tr("Change Dealer Name"),   // Dialog name
-        tr("Enter a new name for the Dealer:"), // Dialog title(inside of the window)
-        QLineEdit::Normal,
-        dealerName,  // Default text
-        &ok
-        );
-
-    if (ok && !newName.trimmed().isEmpty()) {   // Check if okay had been pressed and if the text isn't empty
-        dealerName = newName;   // Update the dealer name variable
-        // Update the two labels
-        ui->d_cards_text->setText(dealerName + "'s cards: ");
-        ui->d_hands_text->setText(dealerName + "'s hands(approx.): ");
-        saveStats();    // Save the dealer name
-    }
-}
-
-// When the New Game action is triggered
-void MainWindow::on_actionNew_Game_triggered() {
-    initialise();   // Reinitialise game
-
-    if (isGameActive && aiMode == 0) { // If the game is active and the AI preset is the default one
-        isGameActive = false;   // We make it inactive
-        losses++;   // Count this as a loss
-        saveStats();    // And save the stats
-    }
-}
-
-// When the Change Wallpaper action is triggered
-void MainWindow::on_actionChange_Wallpaper_triggered() {
-    WallpaperSettings ws(this); // Create a WallpaperSettings window with a reference to the main window
-    ws.exec();  // Ensure that it actually appears on the screen
-}
-
-// Change wallpaper function(for default wallpapers)
-void MainWindow::changeWallpaper(int id)
-{
-    // Load background image
-    QPixmap bg(":/backgrounds/assets/background_" + QString::number(id) + ".png");
-    if (bg.isNull()) {  // If it fails to load
-        qWarning() << "Failed to load wallpaper with ID" << id;
-        return; // Quit function abruptly
-    }
-
-    // Scale it perfectly to current window size
-    QPixmap scaled = bg.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, scaled); // Make the background scaled
-    this->setPalette(palette);  // Set the background
-    this->setAutoFillBackground(true);  // Ensure auto filling is on
-}
-
-// Change wallpaper to a custom one.
-void MainWindow::changeWallpaper(const QString &filePath)
-{
-    // Load background image
-    QPixmap bg(filePath);
-    if (bg.isNull()) {  // If it fails to load
-        qWarning() << "Failed to load wallpaper with from" << filePath;
-        currentWallpaperId = 2; // Set the default wallpaper to the second one if the file is missing
-        return; // Quit function abruptly
-    }
-
-    // Scale it perfectly to current window size
-    QPixmap scaled = bg.scaled(this->size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, scaled); // Make the background scaled
-    this->setPalette(palette);  // Set the background
-    this->setAutoFillBackground(true);  // Ensure auto filling is on
-}
-
-// When the player tries to resize the window
-void MainWindow::resizeEvent(QResizeEvent *event)
-{
-    QMainWindow::resizeEvent(event);
-
-    // Reapply the wallpaper dynamically on every resize(to prevent tiling)
-    if (currentWallpaperId != 0) {  // If the wallpaper is NOT custom
-        changeWallpaper(currentWallpaperId);    // Set it based on the ID
-    }   else {  // If it's custom
-            changeWallpaper(customWallpaperPath);   // Set one from the provided path
-    }
-}
-
-// When the player views stats
-void MainWindow::on_actionView_Stats_triggered() {
-    Stats s;    // Creates the stats window
-    s.setStats(wins, losses);   // Sets the stats to match currently loaded stats
-
-    connect(&s, &Stats::resetStatsRequested, this, [this, &s]() {   // If a reset it requested
-        wins = 0;   // Sets the wins to 0
-        losses = 0; // Same for losses
-        saveStats();    // Save stats
-        s.setStats(wins, losses);   // Set stats to match the newly updates stats
-    });
-    s.exec();   // Show the stats window
-}
-
 // Load stats
 void MainWindow::loadStats() {
     QSettings settings("FFNETWORK", "Qlackjack");   // Load the stats
@@ -401,38 +274,6 @@ void MainWindow::saveStats() {
     settings.setValue("playerName", playerName);    // Save the player name
     settings.setValue("dealerName", dealerName);    // Save the dealer name
     settings.setValue("enableSounds", enableSounds);    // Save player's sound preferences
-}
-
-// Open AI presets window
-void MainWindow::on_actionAI_Settings_triggered() {
-    AiMode ai(this);    // Create the window with a reference to the main one
-    ai.updateDefault(aiMode);   // Update the default selected mode to the one that is currently set
-    ai.exec();  // Show the window
-}
-
-// Open About window
-void MainWindow::on_actionAbout_triggered() {
-    About a;    // Create the window
-    a.exec();   // Show it
-}
-
-// Unified settings
-void MainWindow::on_actionSettings_triggered() {
-    Settings* s = new Settings(this);   // Creates the settings window with a reference to the main window
-    s->updateDefault(aiMode);   // Updates the default selected AI preset based on what's actually selected
-    s->exec();  // Shows the window
-    delete s;   // Removes it afterwards(as it crashes upon regular deletion for some reason)
-}
-
-// Enabling/disabling sound via the action bar
-void MainWindow::on_actionEnable_Sounds_toggled(bool checked) {
-    if (checked) {  // If the action is ticked
-        enableSounds = true;    // Enable sounds
-        saveStats();    // Save the settings
-    }   else {  // If the action is not ticked
-        enableSounds = false;   // Disable sounds
-        saveStats();    // Save the settings
-    }
 }
 
 // Gives cards to the player and the dealer at the beginning of the game
@@ -466,3 +307,44 @@ void MainWindow::giveCardsBeginning(int i) {
     checkState(true, true); // Checks if the dealer had lost or won
     });
 }
+
+// Changing windows/tabs
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    switch(index) {
+        case 1:{    // Index 1: Stats
+        Stats s(this);    // Creates the stats window
+        s.setStats(wins, losses);   // Sets the stats to match currently loaded stats
+
+        connect(&s, &Stats::resetStatsRequested, this, [this, &s]() {   // If a reset it requested
+            wins = 0;   // Sets the wins to 0
+            losses = 0; // Same for losses
+            saveStats();    // Save stats
+            s.setStats(wins, losses);   // Set stats to match the newly updates stats
+        });
+        s.exec();   // Show the stats window
+        break;
+        }
+        case 2:{    // Index 2: Customisation window
+            WallpaperSettings ws(this); // Create a WallpaperSettings window with a reference to the main window
+            ws.exec();  // Ensure that it actually appears on the screen
+            break;
+        }
+        case 3:{    // Index 3: Settings(unified)
+            Settings* s = new Settings(this);   // Creates the settings window with a reference to the main window
+            s->updateDefault(aiMode);   // Updates the default selected AI preset based on what's actually selected
+            s->exec();  // Shows the window
+            delete s;   // Removes it afterwards(as it crashes upon regular deletion for some reason)
+            break;
+        }
+        case 4:{    // Index 4: About window
+            About a(this);    // Create the window
+            a.exec();   // Show it
+            break;
+        }
+        default:    // For index 0(which is the game window) and other non existent indexes
+            break;
+    }
+    ui->tabWidget->setCurrentIndex(0);  // Set the tab to the original one upon opening window
+}
+

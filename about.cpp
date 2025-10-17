@@ -1,15 +1,29 @@
 #include "about.h"
+#include "qsettings.h"
 #include "ui_about.h"
 
-About::About(QWidget *parent)
-    : QDialog(parent)
+About::About(MainWindow* w)
+    : QDialog(w)
     , ui(new Ui::About)
 {
-    this->setFixedSize(434, 152); // Lock current size
+    this->showFullScreen(); // Ensure the app scales probably
     ui->setupUi(this);
+    mw = w; // Main window reference
+    WallpaperAssistant wa(this);
+    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
+    int wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
+    wa.changeWallpaper(wallpaperID);    // Change the about menu wallpaper
 }
 
 About::~About()
 {
     delete ui;
 }
+
+// If player switches tabs/windows
+void About::on_tabWidget_currentChanged(int index)
+{
+    mw->on_tabWidget_currentChanged(index); // Open the next window(from main window)
+    this->close();  // Close this window
+}
+

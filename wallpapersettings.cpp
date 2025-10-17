@@ -10,10 +10,11 @@ WallpaperSettings::WallpaperSettings(MainWindow *w)
     , ui(new Ui::WallpaperSettings)
 {
     ui->setupUi(this);
+    this->showFullScreen(); // Make the window scale
     mw = w; // Save reference to main window
-    this->setFixedSize(600, 300); // Lock current size
     QSettings settings("FFNETWORK", "Qlackjack");   // Load save
     wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
+    wa->changeWallpaper(wallpaperID);   // Update wallpaper
 }
 
 // When window is removed
@@ -29,21 +30,24 @@ WallpaperSettings::~WallpaperSettings()
 void WallpaperSettings::on_bg1_clicked()
 {
     wallpaperID = 1;
-    mw->changeWallpaper(1); // Set the background to the first one
+    mw->wa->changeWallpaper(1); // Set the background to the first one in the main window
+    wa->changeWallpaper(1); // Set the background to the first one in this window
 }
 
 // When second background is chosen
 void WallpaperSettings::on_bg2_clicked()
 {
     wallpaperID = 2;
-    mw->changeWallpaper(2); // Set the background to the second one
+    mw->wa->changeWallpaper(2); // Set the background to the second one in the main window
+    wa->changeWallpaper(2); // Set the background to the second one in this window
 }
 
 // When third background is chosen
 void WallpaperSettings::on_bg_3_clicked()
 {
     wallpaperID = 3;
-    mw->changeWallpaper(3); // Set the background to the third one
+    mw->wa->changeWallpaper(3); // Set the background to the third one in the main window
+    wa->changeWallpaper(3); // Set the background to the third one in this window
 }
 
 // When player chooses a custom background
@@ -59,7 +63,7 @@ void WallpaperSettings::on_custom_bg_clicked()
     if (!filePath.isEmpty()) {  // Check if it's a valid path
         QSettings settings("FFNETWORK", "Qlackjack");   // If it is, load the save
         settings.setValue("wallpaperPath", filePath);   // Save the path to a custom wallpaper
-        mw->changeWallpaper(filePath);  // Auto change the wallpaper in the main window
+        mw->wa->changeWallpaper(filePath);  // Auto change the wallpaper in the main window
         wallpaperID = 0;    // Set the wallpaper ID to 0, meaning custom
     }
 }
@@ -112,5 +116,12 @@ void WallpaperSettings::on_redCard_clicked()
     QSettings settings("FFNETWORK", "Qlackjack");   // Load the save
     settings.setValue("cardBackID", 3); // Enforce the red design
     mw->initialise();   // Reinitialise game to update card's back
+}
+
+// Change windows/tabs
+void WallpaperSettings::on_tabWidget_currentChanged(int index)
+{
+    mw->on_tabWidget_currentChanged(index); // Open the new window via main window
+    this->close();  // Close the current window
 }
 

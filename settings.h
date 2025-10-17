@@ -26,6 +26,8 @@ private slots:
 
     void on_enableSound_currentIndexChanged(int index); // When player changes the sound settings
 
+    void on_tabWidget_currentChanged(int index);    // Change tabs/windows
+
 private:
     Ui::Settings *ui;
     MainWindow *mw; // Reference to the main window

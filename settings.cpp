@@ -8,9 +8,13 @@ Settings::Settings(MainWindow *w)
 {
     mw = w; // Save reference to main window
     ui->setupUi(this);
-    this->setFixedSize(this->size()); // Lock window current size
+    this->showFullScreen(); // Make sure the window fits the entire screen
     loadSave(); // Load saved data
     defaultAiMode = mw->aiMode; // Save the AI preset used before modifications in the settings
+    WallpaperAssistant wa(this);
+    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
+    int wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
+    wa.changeWallpaper(wallpaperID);
 }
 
 // Upon window's deletion
@@ -81,3 +85,11 @@ void Settings::save() {
 void Settings::updateDefault(int index) {
     ui->listWidget->setCurrentRow(index);   // Set the selected row
 }
+
+// Changing tabs/windows
+void Settings::on_tabWidget_currentChanged(int index)
+{
+    mw->on_tabWidget_currentChanged(index); // Open the window(via main window)
+    this->close();  // Close the current window
+}
+

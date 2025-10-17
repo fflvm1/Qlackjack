@@ -1,17 +1,23 @@
 #include "stats.h"
+#include "qsettings.h"
 #include "ui_stats.h"
 #include <QtWidgets/qpushbutton.h>
 
-Stats::Stats(QWidget *parent)
-    : QDialog(parent)
+Stats::Stats(MainWindow *w)
+    : QDialog(w)
     , ui(new Ui::Stats)
 {
     ui->setupUi(this);
-    this->setFixedSize(this->size()); // Lock window current size
+    this->showFullScreen(); // Make the window scale properly
+    mw = w; // Set the reference to main window
 
     connect(ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, [this]() { // When player hits the reset button
         emit resetStatsRequested(); // Sends signal to main window that a reset was requested
     });
+    WallpaperAssistant wa(this);    // Wallpaper assistaint
+    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
+    int wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
+    wa.changeWallpaper(wallpaperID);    // Set the wallpaper
 }
 
 Stats::~Stats()
@@ -31,3 +37,11 @@ void Stats::setStats(int wins, int losses) {
     besides just two */
     ui->winningPercent->setText(percentString); // Set the formatted percentage in the text
 }
+
+// Change windows/tabs
+void Stats::on_tabWidget_currentChanged(int index)
+{
+    mw->on_tabWidget_currentChanged(index); // Open the new window(via main window)
+    this->close();  // Close this window
+}
+

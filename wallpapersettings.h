@@ -35,10 +35,13 @@ private slots:
 
     void on_redCard_clicked();  // When player chooses to set a red card back
 
+    void on_tabWidget_currentChanged(int index);    // Change tabs/windows
+
 private:
     Ui::WallpaperSettings *ui;
     MainWindow *mw; // Reference to the main window
     int wallpaperID = 2;    // Selected wallpaper ID
+    WallpaperAssistant *wa = new WallpaperAssistant(this);  // Wallpaper assistaint
 };
 
 #endif // WALLPAPERSETTINGS_H
