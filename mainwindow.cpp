@@ -4,7 +4,6 @@
 #include "stats.h"
 #include "ui_mainwindow.h"
 #include "wallpapersettings.h"
-#include "aimode.h"
 
 #include <QTimer>
 #include <QSoundEffect>
@@ -348,3 +347,15 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     ui->tabWidget->setCurrentIndex(0);  // Set the tab to the original one upon opening window
 }
 
+// When window's size changes(prevent wallpaper from tiling)
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+
+    // Reapply the wallpaper dynamically on every resize(to prevent tiling)
+    if (currentWallpaperId != 0) {  // If the wallpaper is NOT custom
+        wa->changeWallpaper(currentWallpaperId);    // Set it based on the ID
+    }   else {  // If it's custom
+        wa->changeWallpaper(customWallpaperPath);   // Set one from the provided path
+    }
+}

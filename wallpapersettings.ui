@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1015</width>
-    <height>1993</height>
+    <height>1998</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Customisation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0" colspan="2">
+   <item row="2" column="0" colspan="2">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
       <number>0</number>
@@ -32,6 +32,9 @@
        </property>
        <property name="text">
         <string>Choose a wallpaper:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
        <property name="margin">
         <number>0</number>
@@ -172,6 +175,13 @@
     </layout>
    </item>
    <item row="3" column="0" colspan="2">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" colspan="2">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="rightMargin">
       <number>0</number>
@@ -189,6 +199,9 @@
        </property>
        <property name="text">
         <string>Choose card back:</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -288,14 +301,7 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0" colspan="2">
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -343,6 +349,22 @@
        <string>About</string>
       </attribute>
      </widget>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <pointsize>26</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: white;</string>
+     </property>
+     <property name="text">
+      <string>QlackJack</string>
+     </property>
     </widget>
    </item>
   </layout>

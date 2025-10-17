@@ -15,6 +15,8 @@ WallpaperSettings::WallpaperSettings(MainWindow *w)
     QSettings settings("FFNETWORK", "Qlackjack");   // Load save
     wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
     wa->changeWallpaper(wallpaperID);   // Update wallpaper
+    ui->custom->setEnabled(false);
+    ui->custom_bg->setEnabled(false);
 }
 
 // When window is removed

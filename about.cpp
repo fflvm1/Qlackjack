@@ -6,8 +6,8 @@ About::About(MainWindow* w)
     : QDialog(w)
     , ui(new Ui::About)
 {
-    this->showFullScreen(); // Ensure the app scales probably
     ui->setupUi(this);
+    this->showFullScreen(); // Ensure the app scales probably
     mw = w; // Main window reference
     WallpaperAssistant wa(this);
     QSettings settings("FFNETWORK", "Qlackjack");   // Load save

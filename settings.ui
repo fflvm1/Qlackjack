@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>626</height>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,6 +15,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="0">
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QWidget" name="widget_2" native="true">
@@ -82,7 +89,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>20</pointsize>
+            <pointsize>24</pointsize>
             <bold>true</bold>
            </font>
           </property>
@@ -103,6 +110,62 @@
     </layout>
    </item>
    <item row="1" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTabBar::tab {
+	font-size: 16px;
+	padding: 5px;
+}</string>
+     </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::TabPosition::South</enum>
+     </property>
+     <property name="currentIndex">
+      <number>3</number>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>15</width>
+       <height>16</height>
+      </size>
+     </property>
+     <property name="documentMode">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>Game</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Stats</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Customisation</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>Settings</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="rightMargin">
       <number>0</number>
@@ -120,7 +183,7 @@
           </property>
           <property name="font">
            <font>
-            <pointsize>20</pointsize>
+            <pointsize>24</pointsize>
             <bold>true</bold>
            </font>
           </property>
@@ -325,65 +388,24 @@
     </layout>
    </item>
    <item row="0" column="0">
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QLabel" name="label_6">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>26</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">QTabBar::tab {
-	font-size: 16px;
-	padding: 5px;
-}</string>
+      <string notr="true">color: white;</string>
      </property>
-     <property name="tabPosition">
-      <enum>QTabWidget::TabPosition::South</enum>
-     </property>
-     <property name="currentIndex">
-      <number>3</number>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>15</width>
-       <height>16</height>
-      </size>
-     </property>
-     <property name="documentMode">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Game</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>Stats</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab_3">
-      <attribute name="title">
-       <string>Customisation</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab_4">
-      <attribute name="title">
-       <string>Settings</string>
-      </attribute>
-     </widget>
-     <widget class="QWidget" name="tab_5">
-      <attribute name="title">
-       <string>About</string>
-      </attribute>
-     </widget>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="Line" name="line_2">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+     <property name="text">
+      <string>QlackJack</string>
      </property>
     </widget>
    </item>

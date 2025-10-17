@@ -30,8 +30,6 @@ public:
     void addPlayerCard(int value);  // Create a player card
     void addDealerCard(int value, bool isSecondCard = false);   // Create a dealer card
     void playSound(const QString &path);    // Function that plays sound via path
-    void changeWallpaper(int id);   // Function that changes wallpaper
-    void changeWallpaper(const QString &filePath);  // Change wallpaper to a custom one via path
     void loadStats();   // Loads player stats from QSettings
     void saveStats();   // Saves player stats to QSettings
     int aiMode = 0; // Selected AI preset
@@ -65,5 +63,6 @@ private:
     bool enableStartGameButton = false; // Determines whether the Play Again button can show again or not
     bool isAnimationInProgress = false;   // Prevents constant reinitialisation of the game
 protected:
+    void resizeEvent(QResizeEvent *event) override; // Event that reapplies the wallpaper upon app resizing
 };
 #endif // MAINWINDOW_H

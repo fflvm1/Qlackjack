@@ -10,7 +10,6 @@ CONFIG += c++17
 
 SOURCES += \
     about.cpp \
-    aimode.cpp \
     drawcard.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -22,7 +21,6 @@ SOURCES += \
 
 HEADERS += \
     about.h \
-    aimode.h \
     drawcard.h \
     mainwindow.h \
     player.h \
@@ -33,7 +31,6 @@ HEADERS += \
 
 FORMS += \
     about.ui \
-    aimode.ui \
     mainwindow.ui \
     settings.ui \
     stats.ui \
