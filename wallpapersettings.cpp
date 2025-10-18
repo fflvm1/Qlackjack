@@ -14,9 +14,6 @@ WallpaperSettings::WallpaperSettings(MainWindow *w)
     mw = w; // Save reference to main window
     QSettings settings("FFNETWORK", "Qlackjack");   // Load save
     wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
-    wa->changeWallpaper(wallpaperID);   // Update wallpaper
-    ui->custom->setEnabled(false);
-    ui->custom_bg->setEnabled(false);
 }
 
 // When window is removed
@@ -24,7 +21,7 @@ WallpaperSettings::~WallpaperSettings()
 {
     QSettings settings("FFNETWORK", "Qlackjack");   // Load save
     settings.setValue("wallpaperID", wallpaperID);  // Change saves wallpaper ID to the variable
-    mw->loadStats();    // Load the save inside of the main window to update the wallpaper
+    mw->wa->loadWallpaperFromLastSave();    // Load the save inside of the main window to update the wallpaper
     delete ui;
 }
 
@@ -65,8 +62,8 @@ void WallpaperSettings::on_custom_bg_clicked()
     if (!filePath.isEmpty()) {  // Check if it's a valid path
         QSettings settings("FFNETWORK", "Qlackjack");   // If it is, load the save
         settings.setValue("wallpaperPath", filePath);   // Save the path to a custom wallpaper
-        mw->wa->changeWallpaper(filePath);  // Auto change the wallpaper in the main window
         wallpaperID = 0;    // Set the wallpaper ID to 0, meaning custom
+        wa->changeWallpaper(filePath);  // Change the wallpaper in this window to the custom wallpaper
     }
 }
 

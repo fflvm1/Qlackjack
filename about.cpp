@@ -11,8 +11,6 @@ About::About(MainWindow* w)
     mw = w; // Main window reference
     WallpaperAssistant wa(this);
     QSettings settings("FFNETWORK", "Qlackjack");   // Load save
-    int wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
-    wa.changeWallpaper(wallpaperID);    // Change the about menu wallpaper
 }
 
 About::~About()

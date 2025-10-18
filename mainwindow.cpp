@@ -19,11 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->playerDeck->setAlignment(Qt::AlignLeft);    // Ensures that cards appear on the left side of the player's deck
     ui->dealerDeck->setAlignment(Qt::AlignRight);   // Ensures that cards appear on the right side of the dealer's deck
     loadStats();    // Load save
-    if (currentWallpaperId != 0) {  // Check if the saved wallpaper is NOT a custom one
-        wa->changeWallpaper(currentWallpaperId); // If it's not, show the last saved wallpaper or the default(second) wallpaper
-    }   else {  // If it a custom one
-            wa->changeWallpaper(customWallpaperPath);   // Change the wallpaper to that path
-        }
     ui->actionEnable_Sounds->setChecked(enableSounds);  // Make enableSounds checked/unchecked based on if the sounds were enabled during the save
     initialise();   // Initialise game
 }

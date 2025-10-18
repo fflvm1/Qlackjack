@@ -15,9 +15,6 @@ Stats::Stats(MainWindow *w)
         emit resetStatsRequested(); // Sends signal to main window that a reset was requested
     });
     WallpaperAssistant wa(this);    // Wallpaper assistaint
-    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
-    int wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
-    wa.changeWallpaper(wallpaperID);    // Set the wallpaper
 }
 
 Stats::~Stats()

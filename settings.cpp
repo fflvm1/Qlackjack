@@ -12,9 +12,6 @@ Settings::Settings(MainWindow *w)
     loadSave(); // Load saved data
     defaultAiMode = mw->aiMode; // Save the AI preset used before modifications in the settings
     WallpaperAssistant wa(this);
-    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
-    int wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
-    wa.changeWallpaper(wallpaperID);
 }
 
 // Upon window's deletion
