@@ -12,8 +12,7 @@ WallpaperSettings::WallpaperSettings(MainWindow *w)
     ui->setupUi(this);
     this->showFullScreen(); // Make the window scale
     mw = w; // Save reference to main window
-    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
-    wallpaperID = settings.value("wallpaperID", 2).toInt(); // Set wallpaperID to match the currently set wallpaper
+    wa->loadWallpaperFromLastSave();    // Prevent tiling by loading the wallpaper again(loading in .h happens before the UI is loaded)
 }
 
 // When window is removed

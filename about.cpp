@@ -1,5 +1,4 @@
 #include "about.h"
-#include "qsettings.h"
 #include "ui_about.h"
 
 About::About(MainWindow* w)
@@ -10,7 +9,10 @@ About::About(MainWindow* w)
     this->showFullScreen(); // Ensure the app scales probably
     mw = w; // Main window reference
     WallpaperAssistant wa(this);
-    QSettings settings("FFNETWORK", "Qlackjack");   // Load save
+    QString qtVersion = QT_VERSION_STR; // Get the Qt version
+    ui->license->setText("Qt " + qtVersion+"\nThis application uses the Qt framework © The Qt Company Ltd.\n"
+                                     "Qt is licensed under the GNU Lesser General Public License version "
+                                     "3.\nSee https://www.qt.io/licensing/ for details.");  // Set the license info text
 }
 
 About::~About()
