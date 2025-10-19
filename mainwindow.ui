@@ -57,6 +57,9 @@
              <bold>true</bold>
             </font>
            </property>
+           <property name="styleSheet">
+            <string notr="true">color: white;</string>
+           </property>
            <property name="text">
             <string>Player won!</string>
            </property>
@@ -500,7 +503,14 @@
    <addaction name="menuPlayers"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">alternate-background-color: rgb(255, 255, 255);</string>
+   </property>
+  </widget>
   <action name="actionNew_Game">
    <property name="text">
     <string>New Game</string>

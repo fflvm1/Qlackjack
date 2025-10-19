@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
-    <height>152</height>
+    <width>565</width>
+    <height>203</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,7 +24,7 @@
      </property>
      <property name="maximumSize">
       <size>
-       <width>110</width>
+       <width>128</width>
        <height>128</height>
       </size>
      </property>
@@ -60,7 +60,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Version 1.0(161025)</string>
+        <string>Version 1.0.0(191025)</string>
        </property>
       </widget>
      </item>
@@ -82,6 +82,29 @@
       <widget class="QLabel" name="label_6">
        <property name="text">
         <string>Made with ♡ by flλre</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="license">
+       <property name="text">
+        <string>Qt 6.9.3
+This application uses the Qt framework © The Qt Company Ltd.
+Qt is licensed under the GNU Lesser General Public License version 3.
+See https://www.qt.io/licensing/ for details.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
